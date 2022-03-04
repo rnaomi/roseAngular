@@ -1,0 +1,35 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    },
+    {
+      "id": 2,
+      "firstName": "Jane",
+      "lastName": "doe",
+      "email": "doe@gmail.com",
+      "gender": "Female",
+      "status": "Active"
+    },
+    {
+      "id": 3,
+      "firstName": "Jane",
+      "lastName": "doe",
+      "email": "doe@gmail.com",
+      "gender": "dfdf",
+      "status": "dfdf"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
