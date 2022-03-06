@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup ,Validators} from '@angular/forms';
+
 import { ApiService } from '../shared/api.service';
 import { EmployeeModel } from './Employee-dash board.model';
 
@@ -9,7 +10,9 @@ import { EmployeeModel } from './Employee-dash board.model';
   templateUrl: './employee-dashboard.component.html',
   styleUrls: ['./employee-dashboard.component.css']
 })
+
 export class EmployeeDashboardComponent implements OnInit {
+  page :number = 1;
    formValue !: FormGroup ;
    employeeModelobj:EmployeeModel = new EmployeeModel();
    showAdd!:boolean;
@@ -17,15 +20,19 @@ export class EmployeeDashboardComponent implements OnInit {
    employeeData ! : any;
   constructor(private formbuilbar:FormBuilder, private api: ApiService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
     this.formValue = this.formbuilbar.group({
-      name : [''],
-      email : [''],
-      gender : [''],
-      status : [''],
+      name : ['',[Validators. required ,Validators.minLength(5) , Validators.maxLength(10)]],
+      email : ['' , [Validators.required,Validators.email]],
+      gender : ['' ,Validators.required],
+      status : ['' ,Validators.required],
     })
     this.getAllEmployee();
   
+  }
+  get f(){
+    return this.formValue.controls;
   }
   clickAddEmployee(){
     this.formValue.reset();
