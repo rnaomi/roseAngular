@@ -1,0 +1,112 @@
+<nav class="navbar navbar bg-secondary ">
+    <div class="container">
+        <h1>Table Application</h1>
+        <div class="d-flex">
+            <button (click)= "clickAddEmployee()" class=" btn btn-success" type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" >Add User</button>
+        </div>
+    </div>
+</nav>
+<table class="table container" >
+    <thead>
+      <tr>
+        <th scope="col">UserID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of employeeData |paginate : {itemsPerPage : 7, currentPage : page}">
+      <td>{{row.id}}</td>
+      <td>{{row.name}}</td>
+      <td>{{row.email}}</td>
+      <td>{{row.gender}}</td>
+      <td>{{row.status}}</td>
+        <td>
+          <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success ms-3"(click)="onEdit(row)">Edit</button>
+          <button (click)="deleteEmployee(row)" class="btn btn-danger mx-3">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls
+  (pageChange)="page =($event)">
+</pagination-controls>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">User Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formValue">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Name</label>
+              <input type="text" formControlName="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              [ngClass]="{'is-invalid':formValue.get('name')?.touched && formValue.get('name')?.invalid}">
+              <div *ngIf="f['name'].touched && f['name'].invalid">
+                <span class="text-danger" *ngIf="f['name'].errors?.['required']">
+                    Name is required!
+                </span>
+                <span class="text-danger" *ngIf="f['name'].errors?.['minlength'] || f['name'].errors?.['maxlength'] ">
+                  Name must be greater than 4 characters and less than 10 characters
+              </span>
+          
+            </div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Email</label>
+              <input type="email" formControlName = "email"class="form-control" id="exampleInputPassword1" [ngClass]="{'is-invalid':formValue.get('email')?.touched && formValue.get('email')?.invalid}">
+              <div *ngIf="f['email'].touched && f['email'].invalid">
+                <span class="text-danger" *ngIf="f['email'].errors?.['required']">
+                    Email is required!
+                </span>
+                <span class="text-danger" *ngIf="f['email'].errors?.['email']">
+                  Enter a valid email address
+              </span>
+             
+            </div>
+            </div>
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-select" aria-label="Default select example" formControlName="gender" [ngClass]="{'is-invalid':formValue.get('gender')?.touched && formValue.get('gender')?.invalid}">
+                <option selected>Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              <div *ngIf="f['gender'].touched && f['gender'].invalid">
+                <span class="text-danger" *ngIf="f['gender'].errors?.['required']">
+                    Please Select a Value
+                </span>
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" aria-label="Default select example" formControlName="status"
+              [ngClass]="{'is-invalid':formValue.get('status')?.touched && formValue.get('status')?.invalid}">
+                <option selected>Select status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              <div *ngIf="f['status'].touched && f['status'].invalid">
+                <span class="text-danger" *ngIf="f['status'].errors?.['required']">
+                    Please Select a Value
+                </span>
+                </div>
+                 
+            </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button"class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" *ngIf="showAdd"  class="btn btn-primary"  (click)="postEmployeeDetails()" >Add</button>
+          <button type="button"*ngIf="showUpdate" (click)="updateEmployeeDetails()" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
